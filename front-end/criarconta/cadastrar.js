@@ -36,7 +36,7 @@ btn.addEventListener('click', async ()=>{
             })
         })
         let dados = await enviar.json()
-        let popupTexto = popup.querySelector('p')
+        let popupTexto = popup.querySelector('h2')
         if (popupTexto && dados.mensagem) {
             popupTexto.textContent = dados.mensagem
         }

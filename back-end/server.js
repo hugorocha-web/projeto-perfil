@@ -49,6 +49,12 @@ function verifyJWT(req, res, next){
     }
 }
 
+app.get('/me', verifyJWT, async (req, res)=>{
+    
+    console.log('entrou')
+
+
+})
 
 app.post('/criarconta',  async (req, res)=>{
     let dados = req.body

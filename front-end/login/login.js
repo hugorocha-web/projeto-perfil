@@ -34,15 +34,19 @@ btn.addEventListener('click', async ()=>{
             })
         })
         let dados = await enviar.json()
-        let popupTexto = popup.querySelector('p')
+        let status = await enviar.status
+        let popupTexto = popup.querySelector('h2')
         if (popupTexto && dados.mensagem) {
             popupTexto.textContent = dados.mensagem
         }
 
         
         popup.style.display = 'flex'
+        if(status === 200){
+            localStorage.setItem('token', dados.token)
+        }
+       
         
-        console.log(dados.mensagem)
     } 
     catch (error) {
         console.log(error)
