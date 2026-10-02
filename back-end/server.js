@@ -26,7 +26,7 @@ const User = mongoose.model('user', UserSchema)
 function verifyJWT(req, res, next){
     let token = req.headers["authorization"]
     if(!token){
-        res.status(401).json({
+        return res.status(401).json({
             mensagem:'não existe token'
         })
     }

@@ -17,7 +17,7 @@ async function testartoken(){
         })
         let dados = await enviarjwt.json()
         let status = await enviarjwt.status
-        if(status===403){
+        if(status===403 || status===401){
             window.location.href = '../login/login.html'
         }
         console.log(dados)
