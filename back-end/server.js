@@ -21,8 +21,38 @@ const UserSchema = new mongoose.Schema({
 })
 
 const User = mongoose.model('user', UserSchema)
-app.post('/criarconta', async (req, res)=>{
+
+
+function verifyJWT(req, res, next){
+    let token = req.headers["authorization"]
+    if(!token){
+        res.status(401).json({
+            mensagem:'não existe token'
+        })
+    }
+    token = token.replace('Bearer ' ,'')
+    
+    
+    try {
+        
+        let decoded = jwt.verify(token, process.env.JWT_KEY)
+        if (!decoded) return res.status(403).json({ message: "Invalid token." });
+        res.locals.token = decoded
+        next()
+
+        
+    } 
+    catch (error) {
+        return res.status(403).json({
+            mensagem: error.message
+        })
+    }
+}
+
+
+app.post('/criarconta',  async (req, res)=>{
     let dados = req.body
+    console.log(dados)
     
     
 
