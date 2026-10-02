@@ -50,8 +50,10 @@ function verifyJWT(req, res, next){
 }
 
 app.get('/me', verifyJWT, async (req, res)=>{
+    let id = res.locals.token.userId
     
-    console.log('entrou')
+    let usuario = await User.findById(id)
+    res.json(usuario)
 
 
 })

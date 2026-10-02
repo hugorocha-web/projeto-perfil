@@ -44,6 +44,7 @@ btn.addEventListener('click', async ()=>{
         popup.style.display = 'flex'
         if(status === 200){
             localStorage.setItem('token', dados.token)
+            window.location.href = '../perfil/perfil.html'
         }
        
         
