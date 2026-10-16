@@ -178,7 +178,8 @@ app.post('/criarconta',  async (req, res)=>{
             nome: dados.nome,
             email: dados.email,
             senha: dados.senha,
-            bio: dados.bio
+            bio: dados.bio,
+            foto:dados.foto
         });
         if (novoUsuario) {
             res.status(201).json({
