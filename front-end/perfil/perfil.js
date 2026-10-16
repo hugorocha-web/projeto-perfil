@@ -16,8 +16,8 @@ async function testartoken(){
             }
         })
         let dados = await enviarjwt.json()
-        
-        document.querySelector('.profile-avatar').src = dados.foto
+
+        document.querySelector('.profile-avatar').src = dados.foto || 'https://www.cartacapital.com.br/wp-content/uploads/2021/01/Bolsonaro-Impeachment-1.jpg'
         let status = await enviarjwt.status
         if(status===403 || status===401){
             window.location.href = '../login/login.html'
