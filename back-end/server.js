@@ -110,7 +110,7 @@ cloudinary.config({
 })
 app.put('/perfil', verifyJWT, upload.single('imagem'), async (req, res)=>{
     let img = req.file
-    console.log(img)
+    
     try {
         
         if (!img) {
