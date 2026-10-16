@@ -61,6 +61,7 @@ app.get('/me', verifyJWT, async (req, res)=>{
     let id = res.locals.token.userId
     
     let usuario = await User.findById(id)
+        .select('nome email bio foto')
     res.json(usuario)
 
 
@@ -97,7 +98,10 @@ import { v2 as cloudinary } from 'cloudinary'
 //cloudinary salva e entrega a url da foto
 
 const upload = multer({
-    storage: multer.memoryStorage()
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    }
 })
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
