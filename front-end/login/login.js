@@ -5,13 +5,11 @@ function fecharPopup() {
     popup.style.display = 'none'
 }
 
-
 popup.addEventListener('click', (e) => {
     if (e.target === popup) {
         fecharPopup()
     }
 })
-
 
 let botoesFechar = popup.querySelectorAll('button')
 botoesFechar.forEach(botao => {
@@ -23,10 +21,10 @@ btn.addEventListener('click', async ()=>{
     let senha = document.querySelector('#password').value
 
     try {
-        let enviar = await fetch('http://localhost:3000/login', {
+        let enviar = await fetch('https://projeto-perfil.onrender.com/login', {
             method:'POST',
             headers:{
-                'Content-Type':'application/json', 
+                'Content-Type':'application/json',
             },
             body: JSON.stringify({
                 email:email,
@@ -40,15 +38,13 @@ btn.addEventListener('click', async ()=>{
             popupTexto.textContent = dados.mensagem
         }
 
-        
         popup.style.display = 'flex'
         if(status === 200){
             localStorage.setItem('token', dados.token)
             window.location.href = '../perfil/perfil.html'
         }
-       
-        
-    } 
+
+    }
     catch (error) {
         console.log(error)
     }

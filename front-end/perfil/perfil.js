@@ -5,13 +5,12 @@ async function testartoken(){
         window.location.href = '../login/login.html'
         return
     }
-    
-    
+
     try {
-        let enviarjwt = await fetch('http://localhost:3000/me',{
+        let enviarjwt = await fetch('https://projeto-perfil.onrender.com/me',{
             method:'GET',
             headers:{
-                'Content-Type': 'application/json', 
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             }
         })
@@ -23,7 +22,7 @@ async function testartoken(){
             window.location.href = '../login/login.html'
             return
         }
-        
+
         document.querySelector('.profile-name').textContent = dados.nome
         document.querySelector('.profile-bio').textContent = dados.bio
         let btn = document.querySelector('.btnedit')
@@ -49,18 +48,18 @@ async function testartoken(){
             document.querySelector('#fundopreto').style.display='none'
         })
         let btnenviar = document.querySelector('#btnenviarfoto')
-        
+
         let inputImagem = document.querySelector('#imagem')
         let nomeArquivo = document.querySelector('#nome-arquivo')
         const previewFoto = document.getElementById('previewFoto');
         btnenviar.addEventListener('click', async ()=>{
             let arquivo = inputImagem.files[0]
             if(arquivo){
-                
+
                 let formulario = new FormData()
                 formulario.append('imagem', arquivo)
                 try {
-                    let enviar = await fetch('http://localhost:3000/perfil',{
+                    let enviar = await fetch('https://projeto-perfil.onrender.com/perfil',{
                         method:'PUT',
                         headers:{
                             'Authorization': `Bearer ${token}`
@@ -71,9 +70,7 @@ async function testartoken(){
                         return
                     }
                     location.reload();
-                    
 
-                    
                 } catch (error) {
                     console.log(error)
                 }
@@ -82,7 +79,7 @@ async function testartoken(){
 
             }
         })
-        
+
         inputImagem.addEventListener('change', (e) => {
             let arquivo = e.target.files[0];
             if (inputImagem.files.length > 0) {
@@ -91,16 +88,16 @@ async function testartoken(){
                 nomeArquivo.textContent = 'Nenhuma imagem selecionada'
             }
             if (arquivo) {
-                
+
                 previewFoto.src = URL.createObjectURL(arquivo);
                 previewFoto.style.display = 'block';
             } else {
                 previewFoto.src = '';
                 previewFoto.style.display = 'none';
             }
-            
+
         })
-        
+
         let btnedit = document.querySelector('#btn')
         btnedit.addEventListener('click', async ()=>{
             let text = document.querySelector('input').value
@@ -108,38 +105,31 @@ async function testartoken(){
                 return
             }
             try {
-                let enviar = await fetch('http://localhost:3000/me',{
+                let enviar = await fetch('https://projeto-perfil.onrender.com/me',{
                     method:'PUT',
                     headers:{
-                        'Content-Type': 'application/json', 
+                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify({
                         bio:text
                     })
                 })
-                
+
                 if (!enviar.ok) {
                     throw new Error('Erro ao atualizar a bio')
                 }
-                
+
                 location.reload();
 
-
-                
-                
-
-
-                
-            } 
+            }
             catch (error) {
                 console.log(error)
             }
-            
-            
+
             document.querySelector('#fundopreto').style.display='none'
         })
-    }   
+    }
     catch (error) {
         console.log(error)
     }
