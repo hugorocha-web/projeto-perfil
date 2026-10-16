@@ -62,6 +62,32 @@ app.get('/me', verifyJWT, async (req, res)=>{
 
 })
 
+app.put('/me', verifyJWT, async (req, res)=>{
+    let novaBio = req.body.bio
+
+    let usuario = res.locals.token.userId
+
+    console.log(usuario)
+    
+    try {
+        const result = await User.updateOne(
+        { _id: usuario }, 
+        { $set: {bio: novaBio} } 
+        );
+        if(result.matchedCount===0){
+            return res.status(404).json({
+                mensagem: 'Usuário não encontrado'
+            })
+        }
+        res.status(200).send('Documento atualizado com sucesso!');
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error.message);
+    }
+    
+    
+})
+
 app.post('/criarconta',  async (req, res)=>{
     let dados = req.body
     console.log(dados)
