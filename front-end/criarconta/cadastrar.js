@@ -35,7 +35,8 @@ btn.addEventListener('click', async ()=>{
                 nome:nome,
                 email:email,
                 senha:senha,
-                bio:'Desenvolvedor Web apaixonado por tecnologia e criação de interfaces modernas.'
+                bio:'Desenvolvedor Web apaixonado por tecnologia e criação de interfaces modernas.',
+                foto: 'https://www.cartacapital.com.br/wp-content/uploads/2021/01/Bolsonaro-Impeachment-1.jpg'
             })
         })
         let dados = await enviar.json()

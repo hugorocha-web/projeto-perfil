@@ -21,7 +21,11 @@ const UserSchema = new mongoose.Schema({
     nome: String,
     email: {type: String, unique:true},
     senha: String,
-    bio: String
+    bio: String,
+    foto: {
+        type: String,
+        default: ''
+    }
 })
 
 const User = mongoose.model('user', UserSchema)
@@ -87,6 +91,81 @@ app.put('/me', verifyJWT, async (req, res)=>{
     
     
 })
+//importo o multer pra passar as imagens pro cloudinary
+import multer from 'multer'
+import { v2 as cloudinary } from 'cloudinary'
+//cloudinary salva e entrega a url da foto
+
+const upload = multer({
+    storage: multer.memoryStorage()
+})
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
+app.put('/perfil', verifyJWT, upload.single('imagem'), async (req, res)=>{
+    let img = req.file
+    console.log(img)
+    try {
+        
+        if (!img) {
+            return res.status(400).json({
+                mensagem: 'Nenhuma imagem enviada'
+            })
+        }
+
+        if (!img.mimetype.startsWith('image/')) {
+            return res.status(400).json({
+                mensagem: 'O arquivo precisa ser uma imagem'
+            })
+        }
+        const resultado = await enviarImagem(req.file.buffer)
+
+        const usuario = await User.findByIdAndUpdate(
+            res.locals.token.userId,
+            { foto: resultado.secure_url },
+            { new: true }
+        ).select('nome email bio foto')
+
+        if (!usuario) {
+            return res.status(404).json({
+                mensagem: 'Usuário não encontrado'
+            })
+        }
+
+        res.json({
+            mensagem: 'Foto atualizada!',
+            foto: usuario.foto
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            mensagem: 'Erro ao atualizar a foto'
+        })
+    }
+})
+import { Readable } from 'node:stream'
+
+function enviarImagem(buffer) {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            { folder: 'fotos-perfil' },
+            (error, resultado) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(resultado)
+                }
+            }
+        )
+
+        Readable.from(buffer).pipe(stream)
+    })
+}
+//
+
 
 app.post('/criarconta',  async (req, res)=>{
     let dados = req.body

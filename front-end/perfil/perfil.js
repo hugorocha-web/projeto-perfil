@@ -16,6 +16,8 @@ async function testartoken(){
             }
         })
         let dados = await enviarjwt.json()
+        console.log(dados)
+        document.querySelector('.profile-avatar').src = dados.foto
         let status = await enviarjwt.status
         if(status===403 || status===401){
             window.location.href = '../login/login.html'
@@ -46,16 +48,57 @@ async function testartoken(){
         document.querySelector('#fundopreto').addEventListener('click',()=>{
             document.querySelector('#fundopreto').style.display='none'
         })
+        let btnenviar = document.querySelector('#btnenviarfoto')
+        
         let inputImagem = document.querySelector('#imagem')
         let nomeArquivo = document.querySelector('#nome-arquivo')
-
-        inputImagem.addEventListener('change', () => {
+        const previewFoto = document.getElementById('previewFoto');
+        
+        inputImagem.addEventListener('change', (e) => {
+            let arquivo = e.target.files[0];
             if (inputImagem.files.length > 0) {
                 nomeArquivo.textContent = inputImagem.files[0].name
             } else {
                 nomeArquivo.textContent = 'Nenhuma imagem selecionada'
             }
+            if (arquivo) {
+                
+                previewFoto.src = URL.createObjectURL(arquivo);
+                previewFoto.style.display = 'block';
+            } else {
+                previewFoto.src = '';
+                previewFoto.style.display = 'none';
+            }
+            btnenviar.addEventListener('click', async ()=>{
+                if(arquivo){
+                    console.log(arquivo)
+                    let formulario = new FormData()
+                    formulario.append('imagem', arquivo)
+                    try {
+                        let enviar = await fetch('http://localhost:3000/perfil',{
+                            method:'PUT',
+                            headers:{
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: formulario
+                        })
+                        if(!enviar.ok){
+                            return
+                        }
+                        location.reload();
+                        
+
+                        
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+                else{
+
+                }
+            })
         })
+        
         let btnedit = document.querySelector('#btn')
         btnedit.addEventListener('click', async ()=>{
             let text = document.querySelector('input').value
