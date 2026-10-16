@@ -28,12 +28,33 @@ async function testartoken(){
         btn.addEventListener('click', ()=>{
             document.querySelector('#fundopreto').style.display='flex'
         })
+        let btnfoto = document.querySelector('#btnfoto')
+        btnfoto.addEventListener('click', ()=>{
+            document.querySelector('#enterimg-escuro').style.display='flex'
+        })
+        let popup = document.querySelector('.formimg')
+        popup.addEventListener('click', (e) => {
+            e.stopPropagation()
+        })
+        document.querySelector('#enterimg-escuro').addEventListener('click', ()=>{
+            document.querySelector('#enterimg-escuro').style.display='none'
+        })
         let popupConteudo = document.querySelector('.form')
         popupConteudo.addEventListener('click', (e) => {
             e.stopPropagation()
         })
         document.querySelector('#fundopreto').addEventListener('click',()=>{
             document.querySelector('#fundopreto').style.display='none'
+        })
+        let inputImagem = document.querySelector('#imagem')
+        let nomeArquivo = document.querySelector('#nome-arquivo')
+
+        inputImagem.addEventListener('change', () => {
+            if (inputImagem.files.length > 0) {
+                nomeArquivo.textContent = inputImagem.files[0].name
+            } else {
+                nomeArquivo.textContent = 'Nenhuma imagem selecionada'
+            }
         })
         let btnedit = document.querySelector('#btn')
         btnedit.addEventListener('click', async ()=>{
