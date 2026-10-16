@@ -22,6 +22,7 @@ async function testartoken(){
         }
         console.log(dados)
         document.querySelector('.profile-name').textContent = dados.nome
+        document.querySelector('.profile-bio').textContent = dados.bio
     }   
     catch (error) {
         console.log(error)

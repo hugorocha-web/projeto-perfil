@@ -10,6 +10,9 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+if (!process.env.MONGODB_URI) {
+    console.error('ERRO CRÍTICO: MONGODB_URI não foi definida no arquivo .env!');
+}
 mongoose.connect(process.env.MONGODB_URI)
     .then(()=>{console.log('banco conectado com sucesso!')})
     .catch((erro)=>{console.log('erro ao conectar banco', erro)})
@@ -17,7 +20,8 @@ mongoose.connect(process.env.MONGODB_URI)
 const UserSchema = new mongoose.Schema({
     nome: String,
     email: {type: String, unique:true},
-    senha: String
+    senha: String,
+    bio: String
 })
 
 const User = mongoose.model('user', UserSchema)
@@ -68,7 +72,8 @@ app.post('/criarconta',  async (req, res)=>{
         const novoUsuario = await User.create({
             nome: dados.nome,
             email: dados.email,
-            senha: dados.senha
+            senha: dados.senha,
+            bio: dados.bio
         });
         if (novoUsuario) {
             res.status(201).json({

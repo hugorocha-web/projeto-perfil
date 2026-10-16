@@ -3,6 +3,7 @@ let popup = document.querySelector('.popup-overlay')
 
 function fecharPopup() {
     popup.style.display = 'none'
+    window.location.href = '../login/login.html'
 }
 
 
@@ -16,6 +17,7 @@ popup.addEventListener('click', (e) => {
 let botoesFechar = popup.querySelectorAll('button')
 botoesFechar.forEach(botao => {
     botao.addEventListener('click', fecharPopup)
+    
 })
 
 btn.addEventListener('click', async ()=>{
@@ -32,7 +34,8 @@ btn.addEventListener('click', async ()=>{
             body: JSON.stringify({
                 nome:nome,
                 email:email,
-                senha:senha
+                senha:senha,
+                bio:'Desenvolvedor Web apaixonado por tecnologia e criação de interfaces modernas.'
             })
         })
         let dados = await enviar.json()
